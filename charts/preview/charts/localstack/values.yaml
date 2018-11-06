@@ -129,7 +129,7 @@ resources: {}
 
 ## Persist data to a persitent volume
 persistence:
-  enabled: true
+  enabled: false
   ## Name of existing persistent volume to attach
   # existingClaim: ""
 
@@ -140,7 +140,7 @@ persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  storageClass: "standard"
+  # storageClass: "standard"
 
   ## Persistent Volume Access Mode.
   accessMode: ReadWriteOnce
