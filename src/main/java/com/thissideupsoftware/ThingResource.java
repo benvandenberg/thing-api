@@ -11,6 +11,12 @@ import java.util.UUID;
 @Path("things")
 public class ThingResource {
 
+    private ThingDbService thingDbService;
+
+    public ThingResource(ThingDbService thingDbService) {
+        this.thingDbService = thingDbService;
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
