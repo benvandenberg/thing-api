@@ -36,6 +36,10 @@ spec:
             - name: DEFAULT_REGION
               value: {{ .defaultRegion | quote}}
               {{- end }}
+            - name: LOCALSTACK_SERVICE_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
             - name: HOST_EXTERNAL
               {{- if .hostExternal }}
               value: {{.hostExternal | quote}}

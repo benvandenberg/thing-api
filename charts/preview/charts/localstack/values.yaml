@@ -152,7 +152,7 @@ localstack:
   useSsl: "false"
   defaultRegion: "ap-northeast-1"
   #  default of hostExternal {{service.name}}.{{namespace deployed into}}
-  hostExternal: localstack
+  #  hostExternal:
   kinesisErrorProbability: "0.0"
   dynamodbErrorProbability: "0.0"
   lambdaExecutor: "local"
