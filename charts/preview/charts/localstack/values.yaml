@@ -102,7 +102,7 @@ service:
     #   nodePort:
 
 ingress:
-  enabled: true
+  enabled: false
   # Used to create an Ingress record.
   hosts:
     - localstack
