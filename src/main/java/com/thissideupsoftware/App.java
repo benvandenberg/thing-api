@@ -29,8 +29,7 @@ public class App extends Application<AppConfiguration> {
 
     @Override
     public void run(AppConfiguration appConfiguration, Environment environment) throws Exception {
-        environment.jersey().register(new ThingResource(
-                new ThingDbService(appConfiguration.getLocalstack())
-        ));
+        ThingDbService.INSTANCE.init(appConfiguration.getLocalstack());
+        environment.jersey().register(new ThingResource(ThingDbService.INSTANCE));
     }
 }

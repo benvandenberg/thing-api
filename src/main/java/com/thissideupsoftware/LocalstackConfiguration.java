@@ -6,15 +6,18 @@ import lombok.Getter;
 @Getter
 public class LocalstackConfiguration {
 
+    @JsonProperty("awsRegion")
+    String awsRegion;
+
     // domain name, or IP address
     @JsonProperty("serviceHost")
     String serviceHost;
 
-    // 1 through 64k
-    @JsonProperty("servicePort")
-    Integer servicePort;
-
     // http or https
     @JsonProperty("serviceScheme")
     String serviceScheme;
+
+    // 1 through 64k
+    @JsonProperty("dynamoDbPort")
+    Integer dynamoDbPort;
 }

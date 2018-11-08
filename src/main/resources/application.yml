@@ -7,6 +7,7 @@ server:
     port: 8081
 
 localstack:
-  serviceHost: ${LOCALSTACK_SERVICE_HOST:-localhost}
-  servicePort: ${LOCALSTACK_SERVICE_PORT:-8080}
+  awsRegion: ${AWS_REGION:-us-east-1}
+  serviceHost: ${LOCALSTACK_SERVICE_HOST:-localstack}
   serviceScheme: ${LOCALSTACK_SERVICE_SCHEME:-http}
+  dynamoDbPort: ${DYNAMODB_PORT:-4569}
