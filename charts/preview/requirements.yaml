@@ -8,6 +8,10 @@ dependencies:
   name: exposecontroller
   repository: https://chartmuseum.build.cd.jenkins-x.io
   version: 2.3.56
+- alias: localstack
+  name: localstack
+  repository: https://everpeace.github.io/helm-charts
+  version: 0.1.0
 - alias: preview
   name: thing-api
   repository: file://../thing-api

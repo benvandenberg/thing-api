@@ -35,6 +35,19 @@ pipeline {
           }
         }
       }
+      stage('Acceptance tests') {
+        agent {
+          label "jenkins-newman"
+        }
+        when {
+          branch 'PR-*'
+        }
+        steps {
+          container('newman') {
+            sh "newman run src/test/resources/Thing_API.postman_collection.json --global-var host=`jx get previews -c`"
+          }
+        }
+      }
       stage('Build Release') {
         when {
           branch 'master'

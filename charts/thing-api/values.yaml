@@ -33,5 +33,6 @@ readinessProbe:
   initialDelaySeconds: 30
   periodSeconds: 10
   successThreshold: 1
+  failureThreashold: 5
   timeoutSeconds: 1
 terminationGracePeriodSeconds: 10
