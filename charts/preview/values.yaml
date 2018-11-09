@@ -20,3 +20,14 @@ preview:
     repository:
     tag:
     pullPolicy: IfNotPresent
+
+localstack:
+  nameOverride: localstack
+  service:
+    type: ClusterIP
+    activeLocalStackServices:
+    - name: dynamodb
+      internalPort: 4569
+      externalPort: 4569
+  persistence:
+    enabled: false
