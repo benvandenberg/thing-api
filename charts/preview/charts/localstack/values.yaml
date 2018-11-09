@@ -25,9 +25,9 @@ service:
     #   externalPort: 4568
     #   # set this when you used service.type = NodePort and wanted to use fixed node port
     #   nodePort:
-    # - name: dynamodb
-    #   internalPort: 4569
-    #   externalPort: 4569
+    - name: dynamodb
+      internalPort: 4569
+      externalPort: 4569
     #   # set this when you used service.type = NodePort and wanted to use fixed node port
     #   nodePort:
     # - name: dynamodbstreams
