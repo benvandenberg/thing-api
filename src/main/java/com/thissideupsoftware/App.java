@@ -31,5 +31,6 @@ public class App extends Application<AppConfiguration> {
     public void run(AppConfiguration appConfiguration, Environment environment) throws Exception {
         ThingDbService.INSTANCE.init(appConfiguration.getLocalstack());
         environment.jersey().register(new ThingResource(ThingDbService.INSTANCE));
+        environment.jersey().register(new StatusResource());
     }
 }
