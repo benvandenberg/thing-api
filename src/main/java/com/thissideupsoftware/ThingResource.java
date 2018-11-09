@@ -11,12 +11,18 @@ import java.util.UUID;
 @Path("things")
 public class ThingResource {
 
+    private ThingDbService thingDbService;
+
+    public ThingResource(ThingDbService thingDbService) {
+        this.thingDbService = thingDbService;
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@Valid Thing thing) {
-        UUID id = UUID.randomUUID();
-        thing.setId(id);
+        thingDbService.save(thing);
+        UUID id = thing.getId();
         URI location = null;
         try {
             location = new URI("things/" + id);
@@ -30,10 +36,11 @@ public class ThingResource {
     @Path("{uuid}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get(@PathParam("uuid") UUID uuid) {
-        Thing thing = Thing.builder()
-                .id(uuid)
-                .data("\"foo\":\"bar\"")
-                .build();
-        return Response.ok(thing).build();
+        Thing thing = thingDbService.get(uuid);
+        if (thing == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } else {
+            return Response.ok(thing).build();
+        }
     }
 }
