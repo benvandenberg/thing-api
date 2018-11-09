@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "9a6c6984-3f32-4594-a322-e959c9b9391a",
+		"name": "Thing API Copy",
+		"description": "A collection to run against the Thing API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Readiness Probe",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1916fafc-47db-49ce-8f2d-37e7e7e94704",
+						"type": "text/javascript",
+						"exec": [
+							"host = pm.globals.get(\"host\");",
+							"maxRetries = 30;",
+							"statusRequest = {",
+							"  url: host + \"/status\",",
+							"  method: 'HEAD'",
+							"};",
+							"",
+							"function retry() {",
+							"    --maxRetries;",
+							"    if (maxRetries === 0) {",
+							"        console.log(\"Readiness probe failed\");",
+							"        throw \"Readiness probe failed\";",
+							"    }",
+							"    console.log(\"Service is not ready, sleeping\");",
+							"    setTimeout(probe, 1000);",
+							"}",
+							"",
+							"function probe() {",
+							"    try {",
+							"        pm.sendRequest(statusRequest, function (err, response) {",
+							"            if (err) {",
+							"                retry();",
+							"            } else if (response.code !== 200) {",
+							"                retry();",
+							"            }",
+							"        });",
+							"    } catch (err) {",
+							"        retry();",
+							"    }",
+							"}",
+							"probe();",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ff5a6c79-11a4-4608-bce7-eb2bc07dc9a1",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "HEAD",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/status",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Thing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c7545079-f120-4151-bf12-f7ef7f3d0928",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Thing is created\", function () {",
+							"    pm.response.to.have.header(\"Location\")",
+							"    ",
+							"    // Save the UUID",
+							"    host = pm.globals.get(\"host\");",
+							"    id = pm.response.headers.get(\"Location\");",
+							"    pm.expect(id).contains(host + \"/things/\");",
+							"    id = id.substr(id.lastIndexOf(\"/\")+1);",
+							"    pm.environment.set(\"id\", id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"data\": \"{\\\"foo\\\":\\\"bar\\\" }\"}"
+				},
+				"url": {
+					"raw": "{{host}}/things",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"things"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Thing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4d5364a0-0b51-49c2-a305-e7c54a42a972",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Thing is retrieved\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.not.be.empty;",
+							"    pm.expect(jsonData.data).to.not.be.empty;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/things/{{id}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"things",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

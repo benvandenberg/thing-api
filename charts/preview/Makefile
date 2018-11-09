@@ -3,11 +3,11 @@ OS := $(shell uname)
 preview: 
 ifeq ($(OS),Darwin)
 	sed -i "" -e "s/version:.*/version: $(PREVIEW_VERSION)/" Chart.yaml
-	sed -i "" -e "s/version:.*/version: $(PREVIEW_VERSION)/" ../*/Chart.yaml
+	sed -i "" -e "s/version:.*/version: $(PREVIEW_VERSION)/" ../thing-api/Chart.yaml
 	sed -i "" -e "s/tag: .*/tag: $(PREVIEW_VERSION)/" values.yaml
 else ifeq ($(OS),Linux)
 	sed -i -e "s/version:.*/version: $(PREVIEW_VERSION)/" Chart.yaml
-	sed -i -e "s/version:.*/version: $(PREVIEW_VERSION)/" ../*/Chart.yaml
+	sed -i -e "s/version:.*/version: $(PREVIEW_VERSION)/" ../thing-api/Chart.yaml
 	sed -i -e "s|repository: .*|repository: $(DOCKER_REGISTRY)\/benvandenberg\/thing-api|" values.yaml
 	sed -i -e "s/tag: .*/tag: $(PREVIEW_VERSION)/" values.yaml
 else

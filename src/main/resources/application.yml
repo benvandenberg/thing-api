@@ -5,3 +5,9 @@ server:
   adminConnectors:
   - type: http
     port: 8081
+
+localstack:
+  awsRegion: ${AWS_REGION:-us-east-1}
+  serviceHost: ${LOCALSTACK_SERVICE_HOST:-localstack}
+  serviceScheme: ${LOCALSTACK_SERVICE_SCHEME:-http}
+  dynamoDbPort: ${DYNAMODB_PORT:-4569}
