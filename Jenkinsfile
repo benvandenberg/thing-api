@@ -8,8 +8,25 @@ pipeline {
       CHARTMUSEUM_CREDS = credentials('jenkins-x-chartmuseum')
     }
     stages {
-      stage('CI Build and push snapshot') {
+      stage('Build') {
         when {
+          beforeAgent true
+          not {
+            anyOf {
+              branch 'PR-*'
+              branch 'master'
+            }
+          }
+        }
+        steps {
+          container('maven') {
+            sh "mvn install"
+          }
+        }
+      }
+      stage('Build and Push Snapshot') {
+        when {
+          beforeAgent true
           branch 'PR-*'
         }
         environment {
@@ -22,8 +39,6 @@ pipeline {
             sh "mvn versions:set -DnewVersion=$PREVIEW_VERSION"
             sh "mvn install"
             sh 'export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml'
-
-
             sh "jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:$PREVIEW_VERSION"
           }
 
@@ -37,6 +52,7 @@ pipeline {
       }
       stage('Build Release') {
         when {
+          beforeAgent true
           branch 'master'
         }
         steps {
@@ -57,16 +73,14 @@ pipeline {
           }
           container('maven') {
             sh 'mvn clean deploy'
-
             sh 'export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml'
-
-
             sh "jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION)"
           }
         }
       }
       stage('Promote to Environments') {
         when {
+          beforeAgent true
           branch 'master'
         }
         steps {
