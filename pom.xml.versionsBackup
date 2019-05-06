@@ -6,7 +6,7 @@
 
     <groupId>com.thissideupsoftware</groupId>
     <artifactId>thing-api</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
